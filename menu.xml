@@ -1,0 +1,63 @@
+<menu>
+    <menuitem label='Administração'>
+        <icon>fa:university black</icon>
+        <menu>
+              <menuitem label='Programas'>
+                  <icon>fa:file-code-o black-fw</icon>
+                  <action>SystemProgramList</action>
+              </menuitem>
+              <menuitem label='Grupos'>
+                  <icon>fa:users black</icon>
+                  <action>SystemGroupList</action>
+              </menuitem>
+              <menuitem label='Usuários'>
+                  <icon>fa:user black</icon>
+                  <action>SystemUserList</action>
+              </menuitem>
+              <menuitem label='Painel SQL'>
+                  <icon>fa:table black</icon>
+                  <action>SystemSQLPanel</action>
+              </menuitem>
+              <menuitem label='PHP Info'>
+                  <icon>fa:code black</icon>
+                  <action>SystemPHPInfoView</action>
+              </menuitem>
+        </menu>
+    </menuitem>
+    
+    <menuitem label='Logs'>
+        <icon>fa:desktop black</icon>
+        <menu>
+              <menuitem label='Access Log'>
+                  <icon>fa:key black</icon>
+                  <action>SystemAccessLogList</action>
+              </menuitem>
+              <menuitem label='Change Log'>
+                  <icon>fa:film black</icon>
+                  <action>SystemChangeLogView</action>
+              </menuitem>
+              <menuitem label='SQL Log'>
+                  <icon>fa:database black</icon>
+                  <action>SystemSqlLogList</action>
+              </menuitem>
+        </menu>
+    </menuitem>
+
+    <menuitem label='Eventtus'>
+        <icon>fa:desktop black</icon>
+        <menu>
+              <menuitem label='Events'>
+                  <icon>fa:key black</icon>
+                  <action>EventList</action>
+              </menuitem>
+              <menuitem label='Activities'>
+                  <icon>fa:key black</icon>
+                  <action>ActivityList</action>
+              </menuitem>
+              <menuitem label='Inscriptions'>
+                  <icon>fa:key black</icon>
+                  <action>InscriptionFormList</action>
+              </menuitem>
+        </menu>
+    </menuitem>
+</menu>

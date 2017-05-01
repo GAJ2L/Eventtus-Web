@@ -1,0 +1,27 @@
+<!--[main]-->
+<li class="dropdown notifications-menu">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+    <i class="fa fa-envelope-o"></i>
+    <span class="label label-danger">{$count}</span>
+  </a>
+  <ul class="dropdown-menu">
+    <li class="header">Você {$alert} apólice(s) prestes a vencer</li>
+    <li>
+      <ul class="menu">
+      <!--[mensagem]-->
+        <li>
+          <a href="index.php?class=ApoliceForm&method=onEdit&key={$id}">
+              <i class="fa fa-user red"></i> <b> {$cliente}</b>
+            <small style="float:right;"><i class="fa fa-money"></i> {$valor}</small>
+            <br>
+            <i class="fa fa-calendar-o red"></i> {$vencimento}<br>
+            <i class="fa fa-clipboard red"></i> {$tipo}<br>
+          </a>
+        </li>
+    <!--[/mensagem]-->  
+      </ul>
+    </li>              
+    <li class="footer"><a href="#"></a></li>
+  </ul>
+</li>
+<!--[/main]-->

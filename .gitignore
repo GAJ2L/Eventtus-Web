@@ -1,0 +1,6 @@
+/tmp/
+.idea/
+.phpintel/
+LICENSE
+app/config/*
+attachments/
