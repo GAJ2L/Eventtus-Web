@@ -58,6 +58,10 @@
                   <icon>fa:key black</icon>
                   <action>InscriptionFormList</action>
               </menuitem>
+              <menuitem label='Evaluations'>
+                  <icon>fa:key black</icon>
+                  <action>EvaluationsList</action>
+              </menuitem>
         </menu>
     </menuitem>
 </menu>
