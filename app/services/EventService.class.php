@@ -19,16 +19,34 @@ class EventService
 		{
 			$event = new Event($result[0]->event_id);
 			$event = json_decode($event->toJson());
-			$event->activities = self::getActivities($event->id);
-			
-			echo( json_encode( $event ) );	
+			$event->activities  = self::getActivities($event->id,$params['email']);
+
+			echo( json_encode( $event ) );
 		}
 
 		TTransaction::close();
 	}
 
+	private static function getEvaluation($email,$activity_id)
+	{
+		$repository = new TRepository('Evaluation');
+		$criteria   = new TCriteria;
+		$criteria->add( new TFilter('ref_activity', '=', $activity_id) );
+		$criteria->add( new TFilter('email',        '=', $email) );
+		
+		$objects = $repository->load($criteria, FALSE);
+		
+		if( $objects )
+		{
+			$object = json_decode($objects[0]->toJson());
+			return $object;
+		}
 
-	private static function getActivities( $event_id )
+		return "";
+	}
+
+
+	private static function getActivities( $event_id, $email )
 	{
 		$repository = new TRepository('Activity');
 		$criteria   = new TCriteria;
@@ -41,7 +59,8 @@ class EventService
 			foreach( $objects as $key => $obj ) 
 			{
 				$obj = json_decode($obj->toJson());
-				$obj->attachments = self::getAttachments($obj->id);
+				$obj->attachments =	 self::getAttachments($obj->id);
+				$obj->evaluation  = self::getEvaluation($email,$obj->id);
 				$_objects[] = $obj;
 			}
 		}

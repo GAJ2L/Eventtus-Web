@@ -21,7 +21,7 @@ class EvaluationService
             $evaluation->ref_activity = $params['activity'];
             $evaluation->comment      = $params['comment'];
             $evaluation->stars        = $params['star'];
-            $evaluation->dt_store     = $params['dt_store'];
+            $evaluation->dt_store     = date('Y-m-d H:i:s' , strtotime($params['dt_store']) );
 			file_put_contents("/tmp/error1.txt",serialize($evaluation));	
 			$evaluation->store();
 
