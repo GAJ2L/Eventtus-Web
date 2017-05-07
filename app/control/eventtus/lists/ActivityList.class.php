@@ -49,6 +49,7 @@ class ActivityList extends TPage
         $this->datagrid->setHeight(320);
         $this->datagrid->width = '100%';
         
+        $this->datagrid->addColumn( new TDataGridColumn('id', 'ID', 'left', 100) );
         $this->datagrid->addColumn( new TDataGridColumn('name', 'Name', 'left', 100) );
         $this->datagrid->addColumn( new TDataGridColumn('dt_start' , 'dt_start' , 'center' ,100 ));
         $this->datagrid->addColumn( new TDataGridColumn('dt_end' , 'dt_end' , 'center' ,100 ));

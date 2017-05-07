@@ -9,20 +9,16 @@ class EvaluationService
 	{
 		$objResponse = new stdClass;
 
-			file_put_contents("/tmp/error0.txt","jlsjflas");	
 		try 
 		{
 			TTransaction::open('eventtus');
-			
 
 			$evaluation = new Evaluation();
-			file_put_contents("/tmp/error0.txt","jlsjflassssssssssssssss");	
 			$evaluation->email        = $params['email'];
             $evaluation->ref_activity = $params['activity'];
             $evaluation->comment      = $params['comment'];
             $evaluation->stars        = $params['star'];
             $evaluation->dt_store     = date('Y-m-d H:i:s' , strtotime($params['dt_store']) );
-			file_put_contents("/tmp/error1.txt",serialize($evaluation));	
 			$evaluation->store();
 
 			$objResponse->status = 'success';
@@ -30,7 +26,6 @@ class EvaluationService
 		}
 		catch (Exception $e) 
 		{
-			file_put_contents("/tmp/error2.txt",$e->getMessage());
 			$objResponse->status = 'error';
 			$objResponse->message = $e->getMessage();
 			TTransaction::rollback();
