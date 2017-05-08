@@ -129,9 +129,9 @@ class ActivityForm extends TPage
                 if( $link )
                 {
                     $attachment = new Attachment();
-                    $attachment->size = "0 b";
+                    $attachment->size = "";
                     $attachment->type = 2;
-                    $attachment->name = "Link 1 - ".$object->name;
+                    $attachment->name = "Link $i - ".$object->name;
                     $attachment->activity_id = $object->id;
                     $attachment->local = $link;
                     $attachment->store();
