@@ -19,7 +19,7 @@ class TMail
         $this->pm-> CharSet = 'utf-8';
     }
 
-    public getPHPMailer()
+    public function getPHPMailer()
     {
         return $this->pm;
     }
