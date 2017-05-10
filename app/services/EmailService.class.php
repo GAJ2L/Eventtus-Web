@@ -49,7 +49,7 @@ class EmailService
 					else
 					{
 						$result->status  = 'error';
-						$result->message = 'Houve um erro ao enviar email!!';
+						$result->message = 'Houve um erro ao enviar email!!' . "\n" . $mail->getPHPMailer()->ErrorInfo;
 					}
 				}
 			}

@@ -18,6 +18,11 @@ class TMail
         $this->pm = new PHPMailer;
         $this->pm-> CharSet = 'utf-8';
     }
+
+    public getPHPMailer()
+    {
+        return $this->pm;
+    }
     
     /**
      * Turn ON/OFF the debug
