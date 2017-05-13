@@ -67,8 +67,14 @@ class ActivityList extends TPage
         $action2->setImage('fa:trash-o red fa-lg');
         $action2->setField('id');
         
+        $action3 = new TDataGridAction(array('MessagesList', 'show'));
+        $action3->setLabel( 'Messages' );
+        $action3->setImage('fa:list blue fa-lg');
+        $action3->setField('id');
+        
         $this->datagrid->addAction($action1);
         $this->datagrid->addAction($action2);
+        $this->datagrid->addAction($action3);
         
         $this->datagrid->createModel();
         
@@ -108,6 +114,13 @@ class ActivityList extends TPage
         $this->onReload($param);
     }
     
+    function onMessages($param)
+    {
+        TSession::setValue('activity_id_filter_messages',$param['key']);
+        $messagesList = new MessagesList();
+        $messagesList->show();
+    }
+
     /**
      * method onReload()
      * Load the datagrid with the database objects
