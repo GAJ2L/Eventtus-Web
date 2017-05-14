@@ -183,6 +183,27 @@ class InscriptionFormList extends TPage
             $this->form->validate(); 
             $object->store(); 
             $this->form->setData($object); 
+    
+            // salva qrcode
+            $name = "tmp/{$object->event_id}{$object->email}{$object->hash}.png";
+            file_put_contents( $name , file_get_contents('https://api.qrserver.com/v1/create-qr-code/?size=150x150&data='.$object->hash) );
+
+            $config = parse_ini_file('app/config/mail.ini');
+
+            // envia email com QRCode
+            $mail = new TMail();
+            $mail->addAddress($object->email);
+            $mail->setHtmlBody($this->getMessage());
+            $mail->addAttach($name,'QRCode.png');
+            $mail->setSubject("Novo evento");
+            $mail->setFrom($config['mail'],"Eventtus");
+            $mail->SetSmtpHost($config['host'],$config['port']);
+            $mail->SetSmtpUser($config['mail'],$config['pass']);
+            $mail->SetUseSmtp();
+            $mail->send();
+
+
+
             TTransaction::close(); 
             
             new TMessage('info', TAdiantiCoreTranslator::translate('Record saved')); 
@@ -195,6 +216,23 @@ class InscriptionFormList extends TPage
         }
     }
     
+    public function getMessage()
+    {
+        return "
+            <b>Olá</b><br>
+            <br>
+            Sua inscrição foi efetuada com sucesso.<br>
+            <br>
+            Para mais informações sobre o evento e suas atividades, você pode acessar o aplicativo <b>Eventtus</b>, na PlayStore<br><br>
+            Para adicionar o evento basta você logar com o email cadastrado nessa inscrição e utilizar o QRCode em anexo.<br>
+            <br>
+            Bom evento <b>;)</b><br>
+            <br>
+            Atencionsamente<br>
+            Equipe <b>GAJ2L</b><br> 
+        ";
+    }
+
     /**
      * method onEdit()
      * Executed whenever the user clicks at the edit button da datagrid
