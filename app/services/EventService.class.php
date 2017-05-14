@@ -45,6 +45,30 @@ class EventService
 		return "";
 	}
 
+	private static function getMessages($email,$activity_id)
+	{
+		$repository = new TRepository('Message');
+		$criteria   = new TCriteria;
+		$criteria->add( new TFilter('activity_id', '=', $activity_id) );
+		$criteria->add( new TFilter('email',       '=', $email) );
+		
+		$objects = $repository->load($criteria, FALSE);
+		
+		if( $objects )
+		{
+			$_objects = [];
+			foreach ($objects as $key => $obj) 
+			{
+				$_objects[] = json_decode($obj->toJson());
+
+			}
+			
+			return $_objects;
+		}
+
+		return "";
+	}
+
 
 	private static function getActivities( $event_id, $email )
 	{
@@ -61,11 +85,12 @@ class EventService
 				$obj = json_decode($obj->toJson());
 				$obj->attachments =	self::getAttachments($obj->id);
 				$evaluation       = self::getEvaluation($email,$obj->id);
+				$messages         = self::getMessages($email,$obj->id);
 				
 				if( $evaluation )
-				{
 					$obj->evaluation = $evaluation;  
-				}
+				if( $messages )
+					$obj->messages = $messages;
 
 				$_objects[] = $obj;
 			}
