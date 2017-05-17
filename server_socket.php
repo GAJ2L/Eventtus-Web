@@ -7,7 +7,7 @@ $configs = parse_ini_file("app/config/eventtus.ini");
 
 $address = $configs['ip_socket'];
 $port    = $configs['pt_socket'];
-
+$ws      = $configs['ws_socket'];
 // CRIA O SOCKET 
 if(!($sock = socket_create(AF_INET, SOCK_STREAM, 0)))
 {
@@ -79,7 +79,7 @@ while (true)
                 if(socket_getpeername($client_socks[$i], $address, $port))
                 {
                     echo "Client $address : $port is now connected to us. \n";
-                    $header = socket_read($client_socks[$i], 1024);
+                    $header = socket_read($client_socks[$i], 2048);
                     perform_handshaking($header, $client_socks[$i], $host, $port); //Executa handshake para o Websocket
                 }
 
@@ -93,7 +93,7 @@ while (true)
     {
         if (in_array($client_socks[$i] , $read))
         {
-            $input   = socket_read($client_socks[$i] , 1024);
+            $input   = socket_read($client_socks[$i] , 2048);
             $txt     = substr(trim($input),1);
             $message = json_decode( $txt );
         
@@ -169,7 +169,7 @@ function perform_handshaking($receved_header,$client_conn, $host, $port)
     "Upgrade: websocket\r\n" .
     "Connection: Upgrade\r\n" .
     "WebSocket-Origin: $host\r\n" .
-    "WebSocket-Location: ws://$host:$port/Adianti/Eventtus/server_socket.php\r\n".
+    "WebSocket-Location: $ws\r\n".
     "Sec-WebSocket-Accept:$secAccept\r\n\r\n";
     socket_write($client_conn,$upgrade,strlen($upgrade));
 }
