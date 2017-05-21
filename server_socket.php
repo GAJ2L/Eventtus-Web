@@ -78,7 +78,7 @@ while (true)
 
                 if(socket_getpeername($client_socks[$i], $address, $port))
                 {
-                    echo "Client $address : $port is now connected to us. \n";
+//                    echo "Client $address : $port is now connected to us. \n";
                     $header = socket_read($client_socks[$i], 2048);
                     perform_handshaking($header, $client_socks[$i], $host, $port); //Executa handshake para o Websocket
                 }
@@ -94,41 +94,50 @@ while (true)
         if (in_array($client_socks[$i] , $read))
         {
             $input   = socket_read($client_socks[$i] , 2048);
-            $txt     = substr(trim($input),1);
-            $message = json_decode( $txt );
-        
-            if($txt)
+            if($input!= '')
             {
-                var_dump($txt."\n");
-                // envia msg para todos os clientes
-                foreach ($client_socks as $key => $value) 
-                {
-                    socket_write( $value , mask($txt) );
-                }
-            }
+                $txt     = substr(trim($input),1);
+                $message = json_decode( $txt );
             
-            // caso a mensagem for para gravação em banco
-            if( $message )
-            {
-                try 
-                {    
-                    // salva no banco
-                    TTransaction::open('eventtus');
-                    $objMessage = new Message();
-                    $objMessage->email       = $message->email;
-                    $objMessage->dt_store    = $message->date;
-                    $objMessage->content     = $message->content;
-                    $objMessage->activity_id = $message->activity;
-
-                    $objMessage->store($objMessage);                        
-                    TTransaction::close();
-                } 
-                catch (Exception $e) 
+                if($txt)
                 {
-                    TTransaction::rollback();
-                    echo $e->getMessage()."\n";   
+                    // var_dump($txt."\n");
+                    // envia msg para todos os clientes
+                    foreach ($client_socks as $key => $value) 
+                    {
+                        socket_write( $value , mask($txt) );
+                    }
                 }
                 
+                // caso a mensagem for para gravação em banco
+                if( $message )
+                {
+                    try 
+                    {    
+                        // salva no banco
+                        TTransaction::open('eventtus');
+                        $objMessage = new Message();
+                        $objMessage->email       = $message->email;
+                        $objMessage->dt_store    = $message->date;
+                        $objMessage->content     = $message->content;
+                        $objMessage->activity_id = $message->activity;
+
+                        $objMessage->store($objMessage);                        
+                        TTransaction::close();
+                    } 
+                    catch (Exception $e) 
+                    {
+                        TTransaction::rollback();
+                        echo $e->getMessage()."\n";   
+                    }
+                    
+                }
+            }
+            else
+            {
+                socket_close($client_socks[$i]);
+                unset($client_socks[$i]);
+                sort($client_socks[$i]);
             }
         }
     }
