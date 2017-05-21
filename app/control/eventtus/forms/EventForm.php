@@ -80,16 +80,25 @@ class EventForm extends TPage
      * method onSave()
      * Executed whenever the user clicks at the save button
      */
-    function onSave()
+    function onSave($param)
     {
         try
         {
             TTransaction::open('eventtus'); 
             
             $object = $this->form->getData('Event');
+            $edicao = ($object->id)? true : false ;
             $this->form->validate();             
             $object->store(); 
             $this->form->setData($object);
+
+            if( $edicao )
+            {
+                $notification = new Notification();
+                $notification->setMessage("$object->name atualizado!!");
+                $notification->setAction( Notification::$NOTIFICATION_EVENT, $object->id );
+                $notification->send();
+            }
 
             TTransaction::close();    
             
