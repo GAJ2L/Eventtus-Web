@@ -86,18 +86,15 @@ class EventForm extends TPage
         {
             TTransaction::open('eventtus'); 
             
-            $object = $this->form->getData('Event');
-            $edicao = ($object->id)? true : false ;
+            $event = $this->form->getData('Event');
+            $edicao = ($event->id)? true : false ;
             $this->form->validate();             
-            $object->store(); 
-            $this->form->setData($object);
+            $event->store(); 
+            $this->form->setData($event);
 
             if( $edicao )
             {
-                $notification = new Notification();
-                $notification->setMessage("$object->name atualizado!!");
-                $notification->setAction( Notification::$NOTIFICATION_EVENT, $object->id );
-                $notification->send();
+                $this->sendNotifications($event);
             }
 
             TTransaction::close();    
@@ -140,6 +137,29 @@ class EventForm extends TPage
         {
             new TMessage('error', '<b>Error</b> ' . $e->getMessage());
             TTransaction::rollback();
+        }
+    }
+
+    function sendNotifications( $event )
+    {
+        if( $event->inscriptions )
+        {
+            $notification = new Notification();
+            
+            foreach( $event->inscriptions as $inscription )
+            {
+                $tokens = Token::getTokens($inscription->email);
+                if(  $tokens )
+                {
+                    foreach ($tokens as $token)
+                    {
+                        $notification->addToken($token->token);
+                    }
+                }
+            }    
+
+            $notification->setMessage("Evento: $event->name foi atualizado, atualize o evento para mais informações!");
+            $notification->send();
         }
     }
 

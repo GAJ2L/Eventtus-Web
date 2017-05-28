@@ -26,4 +26,24 @@ class Event extends TRecord
         parent::addAttribute('dt_start');
         parent::addAttribute('dt_end');
     }
+
+    public function get_inscriptions()
+    {
+        try 
+        {
+
+            TTransaction::open('eventtus');
+            $repository   = new TRepository('Inscription');
+            $criteria     = new TCriteria();
+            $criteria->add( new TFilter('event_id','=',$this->id) );
+            $inscriptions = $repository->load($criteria,FALSE);
+            TTransaction::close();
+            return $inscriptions;
+        }
+        catch (Exception $e)
+        {
+            TTransaction::rollback();
+            return null;
+        }
+    }
 }
