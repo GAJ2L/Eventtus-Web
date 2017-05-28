@@ -27,6 +27,22 @@ class EventService
 		TTransaction::close();
 	}
 
+	public static function pullEvent($params)
+	{
+		TTransaction::open('eventtus');
+		
+		if( isset($params['id']) AND isset($params['email']) )
+		{
+			$event = new Event($params['id']);
+			$event = json_decode($event->toJson());
+			$event->activities  = self::getActivities($event->id,$params['email']);
+
+			echo( json_encode( $event ) );
+		}
+
+		TTransaction::close();	
+	}
+
 	private static function getEvaluation($email,$activity_id)
 	{
 		$repository = new TRepository('Evaluation');
