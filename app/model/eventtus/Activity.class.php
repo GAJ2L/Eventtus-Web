@@ -24,4 +24,20 @@ class Activity extends TRecord
         parent::addAttribute('local_geolocation');
         parent::addAttribute('event_id');
     }
+
+    public function get_event()
+    {
+        try 
+        {
+            TTransaction::open('eventtus');
+            $event = new Event($this->event_id);
+            TTransaction::close();
+            return $event;
+        }
+        catch (Exception $e)
+        {
+            TTransaction::rollback();
+            return null;
+        }
+    }
 }

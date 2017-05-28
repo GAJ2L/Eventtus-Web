@@ -71,10 +71,17 @@ class ActivityList extends TPage
         $action3->setLabel( 'Messages' );
         $action3->setImage('fa:list blue fa-lg');
         $action3->setField('id');
+ 
+        $action4 = new TDataGridAction(array($this, 'onSendMessage'));
+        $action4->setLabel( 'Notifications' );
+        $action4->setImage('fa:bell-o green fa-lg');
+        $action4->setField('id');
         
+
         $this->datagrid->addAction($action1);
         $this->datagrid->addAction($action2);
         $this->datagrid->addAction($action3);
+        $this->datagrid->addAction($action4);
         
         $this->datagrid->createModel();
         
@@ -175,7 +182,12 @@ class ActivityList extends TPage
             TTransaction::rollback();
         }
     }
-    
+ 
+    function onSendMessage($param)
+    {
+        AdiantiCoreApplication::loadPage("SendMessageActivity",null,$param);
+    }
+
     /**
      * method onDelete()
      * executed whenever the user clicks at the delete button
