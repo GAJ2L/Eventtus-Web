@@ -8,13 +8,6 @@ class Notification
 	private $endpoint;
 	private $fields;
 
-	public static $NOTIFICATION_ALL      = 1;
-	public static $NOTIFICATION_USER     = 2;
-	public static $NOTIFICATION_EVENT    = 3;
-	public static $NOTIFICATION_ACTIVITY = 4;
-
-	public static $EVENT_UPDATE = 1;
-
 	function __construct()
 	{
 		$config = parse_ini_file('app/config/notification.ini');
@@ -24,11 +17,12 @@ class Notification
 		$this->key	     = $config['key'];
 		$this->endpoint  = $config['endpoint'];
 
-		$this->fields->to  			= $config['to'];
-		$this->fields->notification = new stdClass;
-		$this->fields->data         = new stdClass;
-		
+		$this->fields->registration_ids = [];
+		$this->fields->notification     = new stdClass;		
 		$this->fields->notification->title = "Eventtus";
+		$this->fields->notification->icon  = "eventtus";
+		$this->fields->notification->sound = "default";
+		$this->fields->notification->color = "#2269a7";
 	}
 
 	public function setTitle( $title )
@@ -41,6 +35,16 @@ class Notification
 		$this->fields->notification->body = $content;
 	}
 
+	public function addToken($token)
+	{
+		$this->fields->registration_ids[] = $token;
+	}
+
+	public function setTokens($tokens)
+	{
+		$this->fields->registration_ids = $tokens;
+	}
+
 	private function  getHeaders()
 	{
 		return [
@@ -49,15 +53,9 @@ class Notification
 		];
 	}
 
-	/**
-	 * $type = ALL, EVENT, ACTIVITY, USER
-	 *
-	 */
-	public function setAction( $type , $value = null, $method = null )
+	public function setData( $data )
 	{
-		$this->fields->data->type   = $type;
-		$this->fields->data->method = $method;
-		$this->fields->data->value  = $value;
+		$this->fields->data = $data;
 	}
 
 	public function send()
@@ -69,9 +67,7 @@ class Notification
 		curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt( $ch, CURLOPT_SSL_VERIFYPEER, false);
 		curl_setopt( $ch, CURLOPT_POSTFIELDS,     json_encode($this->fields) );
-
 		$result = curl_exec($ch);
-
 		return $result;
 	}
 
