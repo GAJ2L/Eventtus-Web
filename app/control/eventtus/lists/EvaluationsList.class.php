@@ -53,6 +53,14 @@ class EvaluationsList extends TPage
         $this->datagrid->addColumn( new TDataGridColumn('dt_store' , 'Date' , 'center' ,100 ));
         $this->datagrid->addColumn( new TDataGridColumn('ref_activity' , 'Activity' , 'center' ,100 ));
         
+        $action2 = new TDataGridAction(array($this, 'onDelete'));
+        $action2->setLabel(_t('Delete'));
+        $action2->setImage('fa:trash-o red fa-lg');
+        $action2->setField('id');
+        
+        $this->datagrid->addAction($action2);
+        
+
         $this->datagrid->createModel();
         
         $this->pageNavigation = new TPageNavigation;
@@ -155,7 +163,34 @@ class EvaluationsList extends TPage
             TTransaction::rollback();
         }
     }
-   
+ 
+    function onDelete($param)
+    {
+        $action = new TAction(array($this, 'Delete'));
+        $action->setParameters($param);
+        
+        new TQuestion(TAdiantiCoreTranslator::translate('Do you really want to delete ?'), $action);
+    }
+    
+    function Delete($param)
+    {
+        try
+        {
+            $key=$param['key'];
+            TTransaction::open('eventtus');
+            $object = new Evaluation($key, FALSE);
+            $object->delete();
+            TTransaction::close();
+            $this->onReload( $param );
+            new TMessage('info', TAdiantiCoreTranslator::translate('Record deleted'));
+        }
+        catch (Exception $e)
+        {
+            new TMessage('error', '<b>Error</b> ' . $e->getMessage());
+            TTransaction::rollback();
+        }
+    }  
+ 
     /**
      * method show()
      * Shows the page
