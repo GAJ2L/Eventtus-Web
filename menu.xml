@@ -62,6 +62,17 @@
                   <icon>fa:key black</icon>
                   <action>EvaluationsList</action>
               </menuitem>
+              
+              <menuitem label='Options'>
+                  <icon>fa:key black</icon>
+                  <action>OptionFormList</action>
+              </menuitem>
+
+              <menuitem label='Survey'>
+                  <icon>fa:key black</icon>
+                  <action>SurveyList</action>
+              </menuitem>
+
         </menu>
     </menuitem>
 </menu>
