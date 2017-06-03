@@ -19,15 +19,21 @@ class SurveyService
 				$criteria->add( new TFilter('activity_id', '=', $params['activity_id']) );
 				$surveys = $repository->load($criteria);
 
+				$activity = new Activity($params['activity_id']);
+				
+				$result = new stdClass;
+				$result->id 		 = $activity->id;
+				$result->description = $activity->name;
+				$result->questions   = [];
+
 				if( $surveys )
 				{
-					$results = [];
-
 					foreach( $surveys as $value )
 					{
-						$result = new stdClass;
-						$result->id = $value->id;
-						$result->description = $value->description;
+						$option = new stdClass;
+						$option->id          = $value->id;
+						$option->description = $value->description;
+						$option->options     = [];
 
 						$repository = new TRepository('SurveyOption');
 						$criteria   = new TCriteria;
@@ -36,23 +42,26 @@ class SurveyService
 
 						if( $objOptions )
 						{
-							$options = [];
 							foreach( $objOptions as $objOption )
 							{
 								$opt = new Option($objOption->option_id);
-								$options[] = $opt->toJson();
+								
+								$op  = new stdClass;
+								$op->id          = $opt->id;
+								$op->description = $opt->description;
+								
+								$option->options[] = $op;
 							}
-							$result->options = $options;
 						}
 
-						$results[] = json_encode($result);
+						$result->questions[] = $option;
 
 					}
 
-					$objResponse->data    = json_encode($results);
+					$objResponse->data = json_encode($result);
 				}
 
-				$objResponse->status  = 'success';
+				$objResponse->status = 'success';
 				
 				TTransaction::close();
 			}
