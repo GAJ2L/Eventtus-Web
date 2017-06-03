@@ -87,7 +87,7 @@ class SurveyService
 
 							foreach ($surveys as $survey )
 							{
-									$criteria->add( new TFilter('survey_id', '=', $survey->id );
+									$criteria->add( new TFilter('survey_id', '=', $survey->id ) );
 
 									$answers = $repository->load($criteria);
 
