@@ -58,7 +58,7 @@ class SurveyService
 
 					}
 
-					$objResponse->data = json_encode($result);
+					$objResponse->data = $result;
 				}
 
 				$objResponse->status = 'success';
