@@ -1,7 +1,8 @@
 <?php
+
 /**
-* @author lucas.tomasi
-*/
+ * @author lucas.tomasi
+ */
 class SurveyService
 {
 
@@ -9,7 +10,7 @@ class SurveyService
 	{
 			$objResponse = new stdClass;
 
-			if( isset( $params[ 'activity_id' ] ) )
+			if( isset( $params[ 'email' ] ) )
 			{
 					try
 					{
@@ -17,27 +18,25 @@ class SurveyService
 
 							$repository = new TRepository('SurveyAnswer');
 
-							$activity = $params[ 'activity_id' ];
 							$email 		= $params[ 'email' ];
-
-							$answers = json_decode( $params[ 'answers' ] );
+							$answers  = json_decode( $params[ 'answers' ] );
 
 							if ( $answers )
 							{
-									$criteria   = new TCriteria;
-									$criteria->add( new TFilter('activity_id', '=', $activity) );
-									$criteria->add( new TFilter('email', '=', $email) );
-									$repository->delete($criteria);
-
 									foreach ( $answers as $answer )
 									{
-										$result = new SurveyAnswer();
+											$criteria = new TCriteria;
+											$criteria->add( new TFilter('survey_id', '=', $answer->question ) );
+											$criteria->add( new TFilter('email', '=', $email) );
 
-										$result->survey_options_id = $answer->option;
-										$result->email = $email;
-										$result->survey_id = $answer->question;
+											$repository->delete($criteria);
 
-										$result->store();
+											$result = new SurveyAnswer();
+											$result->survey_options_id = $answer->option;
+											$result->email = $email;
+											$result->survey_id = $answer->question;
+
+											$result->store();
 									}
 							}
 
@@ -49,9 +48,9 @@ class SurveyService
 
 					catch ( Exception $e )
 					{
-						$objResponse->status  = 'error';
-						$objResponse->message = $e->getMessage();
-						TTransaction::rollback();
+							$objResponse->status  = 'error';
+							$objResponse->message = $e->getMessage();
+							TTransaction::rollback();
 					}
 
 					finally
