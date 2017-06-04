@@ -24,13 +24,18 @@ class SurveyService
 
 							if ( $answers )
 							{
+									$criteria   = new TCriteria;
+									$criteria->add( new TFilter('activity_id', '=', $activity) );
+									$criteria->add( new TFilter('email', '=', $email) );
+									$repository->delete($criteria);
+
 									foreach ( $answers as $answer )
 									{
 										$result = new SurveyAnswer();
 
-										$result->survey_options_id = $answer['option'];
+										$result->survey_options_id = $answer->option;
 										$result->email = $email;
-										$result->survey_id = $answer['question'];
+										$result->survey_id = $answer->question;
 
 										$result->store();
 									}
@@ -60,66 +65,6 @@ class SurveyService
 				 $objResponse->status  = 'error';
 				 $objResponse->message = 'faltam parametros';
 				 echo json_encode( $objResponse );
-			}
-	}
-
-	function hasSurvey( $params )
-	{
-			$objResponse = new stdClass;
-
-			if( isset($params['activity_id']) )
-			{
-					try
-					{
-							TTransaction::open('eventtus');
-
-							$objResponse->hasSurvey = true;
-
-							$repository = new TRepository('Survey');
-							$criteria   = new TCriteria;
-							$criteria->add( new TFilter('activity_id', '=', $params['activity_id']) );
-
-							$surveys = $repository->load($criteria);
-
-							$repository = new TRepository('SurveyAnswer');
-							$criteria   = new TCriteria;
-							$criteria->add( new TFilter('email', '=', $params['email']) );
-
-							foreach ($surveys as $survey )
-							{
-									$criteria->add( new TFilter('survey_id', '=', $survey->id ) );
-
-									$answers = $repository->load($criteria);
-
-									if ( $answers )
-									{
-											$objResponse->hasSurvey = false;
-											$objResponse->status = 'success';
-											break;
-									}
-							}
-
-							TTransaction::close();
-					}
-
-					catch (Exception $e)
-					{
-						$objResponse->status  = 'error';
-						$objResponse->message = $e->getMessage();
-						TTransaction::rollback();
-					}
-
-					finally
-					{
-						echo json_encode( $objResponse );
-					}
-			}
-
-			else
-			{
-				$objResponse->status  = 'error';
-				$objResponse->message = 'faltam parametros';
-				echo json_encode( $objResponse );
 			}
 	}
 
