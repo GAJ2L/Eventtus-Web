@@ -193,7 +193,7 @@ class InscriptionFormList extends TPage
             // envia email com QRCode
             $mail = new TMail();
             $mail->addAddress($object->email);
-            $mail->setHtmlBody($this->getMessage());
+            $mail->setHtmlBody($this->getMessage($object->hash));
             $mail->addAttach($name,'QRCode.png');
             $mail->setSubject("Novo evento");
             $mail->setFrom($config['mail'],"Eventtus");
@@ -216,7 +216,7 @@ class InscriptionFormList extends TPage
         }
     }
     
-    public function getMessage()
+    public function getMessage($codigo)
     {
         return "
             <b>Olá</b><br>
@@ -224,7 +224,7 @@ class InscriptionFormList extends TPage
             Sua inscrição foi efetuada com sucesso.<br>
             <br>
             Para mais informações sobre o evento e suas atividades, você pode acessar o aplicativo <b>Eventtus</b>, na PlayStore<br><br>
-            Para adicionar o evento basta você logar com o email cadastrado nessa inscrição e utilizar o QRCode em anexo.<br>
+            Para adicionar o evento basta você logar com o email cadastrado nessa inscrição e utilizar o QRCode em anexo, ou você pode adicionar o código <b>{$codigo}</b> manualmente.<br>
             <br>
             Bom evento <b>;)</b><br>
             <br>
