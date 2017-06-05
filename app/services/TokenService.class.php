@@ -16,7 +16,7 @@ class TokenService
 				TTransaction::open('eventtus');
 				
 				$criteria = new TCriteria;
-				$criteria->add(new TFilter('email', '=',$param['email']);
+				$criteria->add(new TFilter('email', '=',$param['email']));
 				$repository = new TRepository('Token');
 				$repository->delete($criteria);
 				
