@@ -57,12 +57,12 @@ class Survey extends TRecord
                 $repository = new TRepository('SurveyAnswer');
 
                 $criteria->add(new TFilter('survey_id',        '=', $this->id));
-                $criteria->add(new TFilter('survey_options_id','=', $option->id));
+                $criteria->add(new TFilter('survey_options_id','=', $option->option_id));
 
                 $objOption = new Option($option->option_id);
 
                 $answers = $repository->load($criteria);
-
+                
                 $result[$objOption->description] = count($answers);
             }
         }

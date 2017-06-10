@@ -11,18 +11,18 @@ class SurveyStatistics extends TPage
 	function __construct($param)
 	{
 		parent::__construct();
-		$this->donut = new MorrisDonut('donut',150);			
-		$this->line  = new MorrisLine('line');			
+		$this->donut = new MorrisDonut('donut',350);			
+		// $this->line  = new MorrisLine('line');			
 		$this->bar   = new MorrisBar('bar');			
 
 		$answers = $this->getAnswers($param['key']);
 
 		$this->donut->setData($answers);
-		$this->line->setData($answers);
+		// $this->line->setData($answers);
 		$this->bar->setData($answers);
 		
 		parent::add($this->donut);
-		parent::add($this->line);
+		// parent::add($this->line);
 		parent::add($this->bar);
 	}
 
