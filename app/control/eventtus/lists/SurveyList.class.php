@@ -62,9 +62,15 @@ class SurveyList extends TPage
         $action2->setLabel(_t('Delete'));
         $action2->setImage('fa:trash-o red fa-lg');
         $action2->setField('id');
+
+        $action3 = new TDataGridAction(array('SurveyStatistics', 'show'));
+        $action3->setLabel(_t('A'));
+        $action3->setImage('fa:bar-chart black fa-lg');
+        $action3->setField('id');
         
         $this->datagrid->addAction($action1);
         $this->datagrid->addAction($action2);
+        $this->datagrid->addAction($action3);
         
         $this->datagrid->createModel();
         
@@ -104,6 +110,11 @@ class SurveyList extends TPage
         $this->onReload($param);
     }
     
+    function showStatistics($param)
+    {
+        // AdiantiCoreApplication::loadPage('',NULL,$param);
+    }
+
     /**
      * method onReload()
      * Load the datagrid with the database objects
