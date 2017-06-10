@@ -63,8 +63,8 @@ class SurveyList extends TPage
         $action2->setImage('fa:trash-o red fa-lg');
         $action2->setField('id');
 
-        $action3 = new TDataGridAction(array('SurveyStatistics', 'show'));
-        $action3->setLabel(_t('A'));
+        $action3 = new TDataGridAction(array($this, 'showStatistics'));
+        $action3->setLabel('Statistics');
         $action3->setImage('fa:bar-chart black fa-lg');
         $action3->setField('id');
         
@@ -112,7 +112,7 @@ class SurveyList extends TPage
     
     function showStatistics($param)
     {
-        // AdiantiCoreApplication::loadPage('',NULL,$param);
+        AdiantiCoreApplication::loadPage('SurveyStatistics',NULL,$param);
     }
 
     /**
