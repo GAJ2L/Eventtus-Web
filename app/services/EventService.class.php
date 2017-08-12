@@ -130,7 +130,7 @@ class EventService
 			$_objects = [];
 			foreach ($objects as $key => $obj) 
 			{
-				$obj->type = $obj->type ?? ' ';
+				$obj->size = $obj->size ?? ' ';
 				$_objects[] = json_decode($obj->toJson());
 			}
 		}
