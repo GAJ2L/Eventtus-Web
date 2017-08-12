@@ -99,10 +99,12 @@ class EventService
 			foreach( $objects as $key => $obj ) 
 			{
 				$obj = json_decode($obj->toJson());
-				$obj->attachments =	self::getAttachments($obj->id);
-				$evaluation       = self::getEvaluation($email,$obj->id);
-				$messages         = self::getMessages($email,$obj->id);
+				$attachments = self::getAttachments($obj->id);
+				$evaluation  = self::getEvaluation($email,$obj->id);
+				$messages    = self::getMessages($email,$obj->id);
 				
+				if( $attachments )
+					$obj->attachments = $attachments;
 				if( $evaluation )
 					$obj->evaluation = $evaluation;  
 				if( $messages )
