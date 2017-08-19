@@ -55,7 +55,7 @@ class EventForm extends TPage
         $table->addRowSet( 'Phone:<font color="red">*</font>'    , $contactPhone );
         $table->addRowSet( 'E-mail:<font color="red">*</font>'   , $contactMail );
 
-        $this->form->setFields(array($name,$id,$banner,$dtStart,$dtEnd,$contactName,$contactPhone,$contactMail,$description));
+        $this->form->setFields(array($cor,$logo,$name,$id,$banner,$dtStart,$dtEnd,$contactName,$contactPhone,$contactMail,$description));
 
         
         $save_button = TButton::create('save', array($this, 'onSave'), _t('Save'), 'fa:floppy-o');
