@@ -21,6 +21,8 @@ class Event extends TRecord
         parent::addAttribute('banner');
         parent::addAttribute('contact_name');
         parent::addAttribute('contact_phone');
+        parent::addAttribute('logo');
+        parent::addAttribute('cor');
         parent::addAttribute('contact_mail');
         parent::addAttribute('description');
         parent::addAttribute('dt_start');

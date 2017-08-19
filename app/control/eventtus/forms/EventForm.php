@@ -30,6 +30,8 @@ class EventForm extends TPage
         $name         = new TEntry('name');
         $description  = new TText('description');
         $banner       = new TEntry('banner');
+        $cor          = new TEntry('cor');
+        $logo         = new TEntry('logo');
         $dtStart      = new TEntry('dt_start');
         $dtEnd        = new TEntry('dt_end');
         $contactName  = new TEntry('contact_name');
@@ -43,6 +45,8 @@ class EventForm extends TPage
         $table->addRowSet( 'Name:<font color="red">*</font>'        , $name );
         $table->addRowSet( 'Description:<font color="red">*</font>' , $description );
         $table->addRowSet( 'Banner:<font color="red">*</font>'      , $banner );
+        $table->addRowSet( 'Cor:<font color="red">*</font>'         , $cor );
+        $table->addRowSet( 'Logo:<font color="red">*</font>'        , $logo );
         $table->addRowSet( 'Dt Start:<font color="red">*</font>'    , $dtStart );
         $table->addRowSet( 'Dt End:<font color="red">*</font>'      , $dtEnd );
         $table->addRowSet( '<b>Contact</b>' );    
